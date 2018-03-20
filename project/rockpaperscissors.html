@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>RockPaperScissors</title>
+    <style>
+
+      #container {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin-top: 50px;
+      }
+      .weapon {
+        height: 200px;
+        width: 200px;
+        
+      }
+      .muted {
+        filter: grayscale(100%);
+      }
+      #computerWeapon {
+        height: 50px;
+        width: 50px;
+      }
+
+    </style>
+
+  </head>
+  <body>
+
+
+    <div id="container">
+      <img id="rock" class="weapon" src="rock.jpg" ></img>
+      <img id="paper" class="weapon" src="paper.jpg"></img>
+      <img id="scissors" class="weapon" src="scissors.jpg"></img>
+    </div>
+
+    <div id="container">
+      <img id="computerWeapon">
+    </div>
+
+    <div id="container">
+      <div id="output"></div>
+    </div>
+
+    <audio id="tie_audio">
+      <source src="tie.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="win_audio">
+      <source src="win.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="lose_audio">
+      <source src="lose.mp3" type="audio/mpeg">
+    </audio>
+
+
+  </body>
+  <script>
+    var weapons = document.getElementsByClassName("weapon");
+
+    for (var i = 0; i < weapons.length; i++) {
+      var weapon = weapons[i];
+      weapon.addEventListener("click", weaponSelect);
+    }
+
+    var userWeapon = "";
+
+    function weaponSelect(event){
+      for (var i = 0; i < weapons.length; i++) {
+      var weapon = weapons[i];
+      weapon.classList.add("muted");
+      }
+      event.target.classList.remove("muted");
+      userWeapon = event.target.attributes[0].value;
+      console.log("User weapon: " + userWeapon);
+      computer();
+      
+    }
+
+    var computerWeapon = ["rock", "paper", "scissors"];
+
+    function computer(){
+      var randomWeapon = Math.floor( Math.random() * computerWeapon.length );
+      console.log("Computer weapon: " + computerWeapon[randomWeapon]);
+      computerWeapon = computerWeapon[randomWeapon];
+      document.getElementById("computerWeapon").src = (computerWeapon + ".jpg");
+      outPutResults();
+    }
+
+    var output = document.getElementById("output");
+    
+    function outPutResults(){
+      if( userWeapon == "rock" && computerWeapon == "rock"){
+        output.innerHTML = "TIE";
+      } else if( userWeapon == "rock" && computerWeapon == "scissors"){
+        output.innerHTML = "YOU WIN!";
+      } else if( userWeapon == "rock" && computerWeapon == "paper"){
+        output.innerHTML = "YOU LOSE.";
+      } else if( userWeapon == "paper" && computerWeapon == "paper"){
+        output.innerHTML = "TIE";
+      } else if( userWeapon == "paper" && computerWeapon == "rock"){
+        output.innerHTML = "YOU WIN!";
+      } else if( userWeapon == "paper" && computerWeapon == "scissors"){
+        output.innerHTML = "YOU LOSE.";
+      } else if( userWeapon == "scissors" && computerWeapon == "scissors"){
+        output.innerHTML = "TIE";
+      } else if( userWeapon == "scissors" && computerWeapon == "paper"){
+        output.innerHTML = "YOU WIN!";
+      } else if( userWeapon == "scissors" && computerWeapon == "rock"){
+        output.innerHTML = "YOU LOSE.";
+      }
+      if (output.innerHTML == "TIE"){
+        var audio = document.getElementById("tie_audio")
+      } else if (output.innerHTML == "YOU WIN!"){
+        var audio = document.getElementById("win_audio")
+      } else if (output.innerHTML == "YOU LOSE."){
+        var audio = document.getElementById("lose_audio")
+      }
+      audio.play();
+      computerWeapon = ["rock", "paper", "scissors"];
+
+    }
+    
+
+
+
+  </script>
+</html>
